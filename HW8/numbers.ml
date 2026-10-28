@@ -263,6 +263,10 @@ end
 (* DO NOT EDIT THE ABOVE SECTION OF CODE *)
 (* YOUR CODE CAN GO BELOW *)
 
+(*
+Harry Nguyen
+Huy Phan
+*)
 module AddOps (N : NAT) : OPNAT with type nat = N.nat = struct
 
   include N
