@@ -16,13 +16,11 @@ let rec tabulate f g x () =
         (fun () -> tabulate f g (g x) ()))
 
 let preOrd tree =
-  let rec visit pending () =
-    match pending with
-    | [] -> Seq.Nil
-    | next :: rest ->
-        match next () with
-        | Leaf -> visit rest ()
-        | Node (left, x, right) ->
-            Seq.Cons (x, visit (left :: right :: rest))
+  let rec visit tree next () =
+    match tree () with
+    | Leaf -> next ()
+    | Node (left, x, right) ->
+        (* Save the right subtree for after the left, as in lecture tree search. *)
+        Seq.Cons (x, visit left (fun () -> visit right next ()))
   in
-  visit [tree]
+  visit tree (fun () -> Seq.Nil)
