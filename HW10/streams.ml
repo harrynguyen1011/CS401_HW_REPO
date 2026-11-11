@@ -55,3 +55,19 @@ let rec interleave (s1 : 'a Seq.t) (s2 : 'a Seq.t) : 'a Seq.t =
     match s1 () with
     | Seq.Nil -> s2 ()
     | Seq.Cons (x, s1') -> Seq.Cons (x, interleave s2 s1')
+
+(*
+double : ’a Seq . t -> ’a Seq . t
+REQUIRES: s is productive
+ENSURES:
+• double s is productive
+• double s -∗→ s ’, a stream containing the same elements as s, but with each element
+appearing twice in a row
+• double s is maximally lazy (evaluating double s never exposes any elements of
+s).
+*)
+let rec double (s : 'a Seq.t) : 'a Seq.t =
+  fun () ->
+    match s () with
+    | Seq.Nil -> Seq.Nil
+    | Seq.Cons (x, s') -> Seq.Cons (x, fun () -> Seq.Cons (x , double s'))
